@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>ISCHOLL - Plateforme de Formation HTML Premium</title>
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts Premium -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Poppins:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a, #0f0c2a, #1a1a3a);
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animation de fond 3D style particules */
+        .bg-3d-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .bg-3d-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.08) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveBackground 25s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-15%, -15%); }
+        }
+
+        /* Loader / Lancement 3D */
+        .launch-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0a2a, #1a1a3a);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease, transform 0.8s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .launch-content {
+            text-align: center;
+            animation: bounceIn 0.8s ease;
+        }
+
+        .launch-content h1 {
+            font-size: 5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFD700, #FF8C00, #FF6A00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(255,215,0,0.5);
+            letter-spacing: 5px;
+        }
+
+        .cube-3d {
+            width: 120px;
+            height: 120px;
+            margin: 30px auto;
+            transform-style: preserve-3d;
+            animation: spinCube 3s infinite linear;
+        }
+
+        .cube-3d div {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, rgba(255,215,0,0.9), rgba(255,106,0,0.9));
+            border: 2px solid rgba(255,255,255,0.5);
+            box-shadow: 0 0 20px rgba(255,215,0,0.5);
+        }
+
+        .front  { transform: translateZ(60px); }
+        .back   { transform: rotateY(180deg) translateZ(60px); }
+        .right  { transform: rotateY(90deg) translateZ(60px); }
+        .left   { transform: rotateY(-90deg) translateZ(60px); }
+        .top    { transform: rotateX(90deg) translateZ(60px); }
+        .bottom { transform: rotateX(-90deg) translateZ(60px); }
+
+        @keyframes spinCube {
+            from { transform: rotateX(0deg) rotateY(0deg); }
+            to { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Navbar Premium */
+        .navbar-premium {
+            background: rgba(10, 10, 30, 0.92);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255,215,0,0.4);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.4);
+        }
+
+        .brand-gold {
+            background: linear-gradient(135deg, #FFD700, #FF8C00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        /* Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            border: 1px solid rgba(255,215,0,0.25);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            border-color: #FFD700;
+            box-shadow: 0 25px 45px rgba(0,0,0,0.5);
+        }
+
+        .btn-premium {
+            background: linear-gradient(45deg, #FFD700, #FF8C00, #FF6A00);
+            border: none;
+            color: #0a0a1a;
+            font-weight: 700;
+            padding: 12px 32px;
+            border-radius: 50px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-premium:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255,215,0,0.7);
+            color: #000;
+        }
+
+        .btn-outline-gold {
+            border: 2px solid #FFD700;
+            background: transparent;
+            color: #FFD700;
+            border-radius: 50px;
+            padding: 8px 24px;
+            transition: all 0.3s;
+        }
+
+        .btn-outline-gold:hover {
+            background: #FFD700;
+            color: #0a0a1a;
+            transform: scale(1.05);
+        }
+
+        /* Course content styles */
+        .course-content-detail {
+            max-height: 600px;
+            overflow-y: auto;
+            padding: 20px;
+            color: #f0f0f0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .course-content-detail h3 {
+            color: #FFD700;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .course-content-detail h4 {
+            color: #FFA500;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .course-content-detail pre {
+            background: #0a0a1a;
+            padding: 15px;
+            border-radius: 15px;
+            border-left: 5px solid #FFD700;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .course-content-detail code {
+            background: rgba(255,215,0,0.2);
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            color: #FFD700;
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,106,0,0.1));
+            border-left: 4px solid #FFD700;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+        }
+
+        /* TP Section */
+        .tp-instruction {
+            background: rgba(0,0,0,0.4);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .tp-instruction h4 {
+            color: #FFD700;
+        }
+
+        /* Auth Modal */
+        .auth-modal .modal-content {
+            background: linear-gradient(135deg, #1a1a3a, #0f0c2a);
+            backdrop-filter: blur(20px);
+            border: 2px solid #FFD700;
+            border-radius: 30px;
+        }
+
+        /* Ad Banner */
+        .ad-banner {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 350px;
+            background: linear-gradient(135deg, #1e1a3a, #0f0c29);
+            border-left: 6px solid #FFD700;
+            border-radius: 25px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            z-index: 1050;
+            transform: translateX(120%);
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            backdrop-filter: blur(15px);
+        }
+
+        .ad-banner.show {
+            transform: translateX(0);
+        }
+
+        .ad-banner h5 {
+            color: #FFD700;
+            font-weight: 800;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a3a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFD700;
+            border-radius: 10px;
+        }
+
+        footer {
+            background: #050514;
+            margin-top: 60px;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #FFD70033;
+        }
+
+        @media (max-width: 768px) {
+            .ad-banner { width: 280px; padding: 15px; bottom: 15px; right: 15px; }
+            .launch-content h1 { font-size: 3rem; }
+            .course-content-detail { max-height: 450px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-3d-animation"></div>
+
+<!-- Launch Screen -->
+<div class="launch-screen" id="launchScreen">
+    <div class="launch-content">
+        <div class="cube-3d">
+            <div class="front"></div>
+            <div class="back"></div>
+            <div class="right"></div>
+            <div class="left"></div>
+            <div class="top"></div>
+            <div class="bottom"></div>
+        </div>
+        <h1>ISCHOLL</h1>
+        <p class="mt-3 fs-5 fw-light">"Pourquoi coder quand on peut... <strong class="text-warning">coder comme un chef</strong> ?" 🚀✨</p>
+        <p class="text-warning fst-italic">Ta formation commence maintenant !</p>
+        <button class="btn btn-premium mt-4" id="enterAppBtn"><i class="fas fa-arrow-right"></i> ENTRER DANS L'ARÈNE</button>
+    </div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-premium sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-2" href="#"><span class="brand-gold">ISCHOLL</span> <i class="fas fa-laptop-code text-warning"></i></a>
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon bg-white rounded"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto gap-3">
+                <li class="nav-item"><a class="nav-link text-white fw-semibold px-3" href="#" id="navCours"><i class="fas fa-book-open me-1"></i> Cours</a></li>
+                <li class="nav-item"><a class="nav-link text-white fw-semibold px-3" href="#" id="navTP"><i class="fas fa-tasks me-1"></i> T.P / Quiz</a></li>
+                <li class="nav-item"><a class="nav-link text-warning fw-bold px-3" href="#" id="btnUnlock"><i class="fas fa-unlock-alt me-1"></i> Déverrouiller T.P</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="container py-4">
+    <!-- Section Cours TRÈS DÉTAILLÉE -->
+    <div id="coursSection">
+        <div class="text-center mb-5" data-aos="fade-down">
+            <h1 class="display-4 fw-bold">📖 <span class="text-warning">Cours HTML Complet</span></h1>
+            <p class="lead">Maîtrisez les fondamentaux du web - Cours 1 : Les bases essentielles</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- COURS PRINCIPAL ULTRA DÉTAILLÉ -->
+            <div class="col-12" data-aos="zoom-in">
+                <div class="glass-card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <span class="badge bg-warning text-dark fs-6 px-3 py-2"><i class="fas fa-star"></i> LEÇON 1 - COMPLÈTE</span>
+                            <h2 class="mt-3 text-warning">HTML : Structure, Balises, Liens et Navigation</h2>
+                        </div>
+                        <i class="fab fa-html5 fa-3x text-warning"></i>
+                    </div>
+                    
+                    <div class="course-content-detail">
+                        <!-- INTRODUCTION -->
+                        <h3>🎯 Introduction au HTML</h3>
+                        <p><strong>HTML</strong> (HyperText Markup Language) est le langage de balisage utilisé pour créer des pages web. Ce n'est pas un langage de programmation, mais un langage de <strong>structuration</strong> qui permet d'organiser le contenu.</p>
+                        <div class="tip-box">
+                            <i class="fas fa-lightbulb text-warning me-2"></i> <strong>À retenir :</strong> HTML donne la structure (les murs et les pièces), CSS viendra pour le style (la décoration), et JavaScript pour l'interactivité (l'électricité).
+                        </div>
+
+                        <!-- INSTALLATION OUTILS -->
+                        <h3>🛠️ Installer les outils nécessaires</h3>
+                        <h4>1. Éditeur de texte</h4>
+                        <p>Outil pour écrire le code : <code>Visual Studio Code</code> (recommandé, gratuit), <code>Sublime Text</code>, ou <code>Notepad++</code>.</p>
+                        <h4>2. Navigateur web</h4>
+                        <p><code>Google Chrome</code>, <code>Firefox</code>, <code>Edge</code> - pour afficher et tester vos pages. Utilisez <kbd>F12</kbd> pour voir les outils développeur.</p>
+
+                        <!-- STRUCTURE DE BASE -->
+                        <h3>🏗️ Structure fondamentale d'une page HTML</h3>
+                        <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="fr"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Mon premier site&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Tout le contenu visible ici --&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                        <ul>
+                            <li><code>&lt;!DOCTYPE html&gt;</code> : Indique au navigateur qu'il s'agit de HTML5</li>
+                            <li><code>&lt;html lang="fr"&gt;</code> : Racine du document, langue française</li>
+                            <li><code>&lt;head&gt;</code> : Métadonnées (non visible)</li>
+                            <li><code>&lt;meta charset="UTF-8"&gt;</code> : Gère les accents (é, è, ç, etc.)</li>
+                            <li><code>&lt;title&gt;</code> : Titre dans l'onglet du navigateur</li>
+                            <li><code>&lt;body&gt;</code> : Corps de la page, tout ce qui s'affiche</li>
+                        </ul>
+
+                        <!-- TITRES -->
+                        <h3>📌 Les titres : &lt;h1&gt; à &lt;h6&gt;</h3>
+                        <p>Hiérarchie du contenu :</p>
+                        <pre><code>&lt;h1&gt;Titre principal (1 seul par page)&lt;/h1&gt;
+&lt;h2&gt;Section importante&lt;/h2&gt;
+&lt;h3&gt;Sous-section&lt;/h3&gt;
+&lt;h4&gt;Détail&lt;/h4&gt;
+&lt;h5&gt;Sous-détail&lt;/h5&gt;
+&lt;h6&gt;Très petit détail&lt;/h6&gt;</code></pre>
+
+                        <!-- PARAGRAPHES ET SAUTS -->
+                        <h3>📝 Paragraphes et sauts de ligne</h3>
+                        <pre><code>&lt;p&gt;Ceci est un paragraphe. Il contient plusieurs phrases.&lt;/p&gt;
+&lt;p&gt;Deuxième paragraphe avec &lt;br&gt; un saut de ligne&lt;br&gt;et une autre ligne.&lt;/p&gt;</code></pre>
+                        <p>La balise <code>&lt;br&gt;</code> est auto-fermante et permet un simple retour à la ligne.</p>
+
+                        <!-- MISE EN VALEUR -->
+                        <h3>✨ Mettre en valeur : &lt;strong&gt; et &lt;em&gt;</h3>
+                        <pre><code>&lt;p&gt;Ceci est &lt;strong&gt;très important&lt;/strong&gt; et ceci est &lt;em&gt;mis en emphase&lt;/em&gt;.&lt;/p&gt;</code></pre>
+                        <ul>
+                            <li><code>&lt;strong&gt;</code> : <strong>gras</strong>, importance forte</li>
+                            <li><code>&lt;em&gt;</code> : <em>italique</em>, emphase légère</li>
+                        </ul>
+
+                        <!-- LISTES -->
+                        <h3>📋 Les listes</h3>
+                        <h4>Liste non ordonnée (à puces)</h4>
+                        <pre><code>&lt;ul&gt;
+    &lt;li&gt;Pomme&lt;/li&gt;
+    &lt;li&gt;Banane&lt;/li&gt;
+    &lt;li&gt;Cerise&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+                        <h4>Liste ordonnée (numérotée)</h4>
+                        <pre><code>&lt;ol&gt;
+    &lt;li&gt;Préchauffer le four&lt;/li&gt;
+    &lt;li&gt;Mélanger les ingrédients&lt;/li&gt;
+    &lt;li&gt;Enfourner&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+
+                        <!-- LIENS -->
+                        <h3>🔗 Les liens hypertextes &lt;a&gt;</h3>
+                        <p>Syntaxe de base : <code>&lt;a href="cible"&gt;Texte cliquable&lt;/a&gt;</code></p>
+                        <h4>Liens dans le même dossier</h4>
+                        <pre><code>&lt;a href="contact.html"&gt;Contact&lt;/a&gt;</code></pre>
+                        <h4>Liens dans un sous-dossier</h4>
+                        <pre><code>&lt;a href="pages/apropos.html"&gt;À propos&lt;/a&gt;</code></pre>
+                        <h4>Liens vers dossier parent</h4>
+                        <pre><code>&lt;a href="../index.html"&gt;Accueil&lt;/a&gt;</code></pre>
+                        <h4>Liens externes (nouvel onglet)</h4>
+                        <pre><code>&lt;a href="https://google.com" target="_blank"&gt;Google&lt;/a&gt;</code></pre>
+                        <h4>Liens internes (ancres)</h4>
+                        <pre><code>&lt;h2 id="top"&gt;Titre&lt;/h2&gt;
+&lt;a href="#top"&gt;Retour en haut&lt;/a&gt;</code></pre>
+                        <h4>Email et téléphone</h4>
+                        <pre><code>&lt;a href="mailto:contact@email.com"&gt;Envoyer mail&lt;/a&gt;
+&lt;a href="tel:+243123456789"&gt;Appeler&lt;/a&gt;</code></pre>
+
+                        <!-- BONNES PRATIQUES -->
+                        <h3>✅ Bonnes pratiques</h3>
+                        <ul>
+                            <li>Indenter son code pour la lisibilité</li>
+                            <li>Toujours fermer les balises</li>
+                            <li>Noms de fichiers : minuscules, sans accents, tirets à la place des espaces</li>
+                            <li>Tester régulièrement dans le navigateur (F5 pour actualiser)</li>
+                            <li>Utiliser des commentaires <code>&lt;!-- ceci est un commentaire --&gt;</code></li>
+                        </ul>
+
+                        <div class="tip-box mt-4">
+                            <i class="fas fa-graduation-cap text-warning me-2"></i> <strong>Résumé :</strong> Avec ces balises, vous pouvez créer des pages structurées, des listes, et des liens entre plusieurs pages !
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COURS 2 et 3 à venir -->
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="glass-card p-4 text-center">
+                    <i class="fas fa-css3-alt fa-3x text-info mb-3"></i>
+                    <h3>Cours 2 : CSS - Mise en style</h3>
+                    <p>À venir prochainement... Couleurs, polices, box model, flexbox</p>
+                    <button class="btn btn-outline-gold btn-sm" disabled><i class="fas fa-clock"></i> Bientôt disponible</button>
+                </div>
+            </div>
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="glass-card p-4 text-center">
+                    <i class="fab fa-js fa-3x text-warning mb-3"></i>
+                    <h3>Cours 3 : JavaScript - Interactivité</h3>
+                    <p>À venir prochainement... Variables, fonctions, événements</p>
+                    <button class="btn btn-outline-gold btn-sm" disabled><i class="fas fa-clock"></i> Bientôt disponible</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section TP avec le TP NUMERO 1 COMPLET -->
+    <div id="tpSection" style="display: none;">
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold">💻 <span class="text-warning">Travaux Pratiques</span></h1>
+            <p id="tpStatusMsg" class="badge bg-danger fs-6 p-3"><i class="fas fa-lock"></i> VERROUILLÉ - Authentification requise</p>
+        </div>
+
+        <div id="tpContentLocked" class="glass-card p-5 text-center">
+            <i class="fas fa-lock fa-4x mb-3 text-warning"></i>
+            <h3>Accès restreint aux Travaux Pratiques</h3>
+            <p>Identifiez-vous avec vos identifiants personnels pour débloquer le TP n°1 : Création d'un site web complet de 3 pages.</p>
+            <button class="btn btn-premium mt-3" id="showAuthBtnTP"><i class="fas fa-key"></i> S'identifier</button>
+        </div>
+
+        <div id="tpContentUnlocked" style="display: none;">
+            <!-- TP NUMERO 1 - COMPLET ET DÉTAILLÉ -->
+            <div class="glass-card p-4 mb-4">
+                <div class="text-center mb-4">
+                    <span class="badge bg-warning text-dark fs-5 px-4 py-2"><i class="fas fa-flask"></i> TP N°1 : Mini Site Web 3 Pages</span>
+                    <h2 class="mt-3 text-warning">🧪 Création d'un site web complet</h2>
+                    <p class="lead">Mettez en pratique toutes les balises HTML vues en cours !</p>
+                </div>
+
+                <div class="tp-instruction">
+                    <h4><i class="fas fa-bullseye text-warning me-2"></i> 🎯 Objectif</h4>
+                    <p>Réaliser un mini site web composé de <strong class="text-warning">3 pages reliées entre elles</strong>, en utilisant uniquement le HTML et les balises vues en cours.</p>
+                </div>
+
+                <div class="tp-instruction">
+                    <h4><i class="fas fa-folder-tree text-warning me-2"></i> 📁 Organisation du travail</h4>
+                    <p>Créez un dossier nommé <code class="bg-dark p-1">mon-ecole</code>. À l'intérieur, créez :</p>
+                    <pre><code>mon-ecole/
+│
+├── index.html      (Page d'accueil)
+├── apropos.html    (Page À propos)
+└── contact.html    (Page Contact)</code></pre>
+                </div>
+
+                <div class="tp-instruction">
+                    <h4><i class="fas fa-check-circle text-warning me-2"></i> 📝 Consignes générales</h4>
+                    <ul>
+                        <li>Chaque page doit avoir la structure complète : <code>&lt;!DOCTYPE html&gt;</code>, <code>&lt;html lang="fr"&gt;</code>, <code>&lt;head&gt;</code>, <code>&lt;meta charset="UTF-8"&gt;</code>, <code>&lt;title&gt;</code>, <code>&lt;body&gt;</code></li>
+                        <li>Bien indenter le code (propre et lisible)</li>
+                        <li>Fermer correctement toutes les balises</li>
+                        <li>Tester chaque page dans le navigateur</li>
+                    </ul>
+                </div>
+
+                <div class="tp-instruction">
+                    <h4><i class="fas fa-home text-warning me-2"></i> 🏠 PAGE 1 : ACCUEIL (<code>index.html</code>)</h4>
+                    <ul>
+                        <li>Un titre principal <code>&lt;h1&gt;</code></li>
+                        <li>Au moins 2 paragraphes <code>&lt;p&gt;</code></li>
+                        <li>Un saut de ligne <code>&lt;br&gt;</code></li>
+                        <li>Utilisation de <code>&lt;strong&gt;</code> et <code>&lt;em&gt;</code></li>
+                        <li>Un sous-titre <code>&lt;h2&gt;</code></li>
+                        <li>Une liste non ordonnée <code>&lt;ul&gt;</code></li>
+                        <li>Une liste ordonnée <code>&lt;ol&gt;</code></li>
+                        <li>Une section Navigation avec liens vers <code>apropos.html</code> et <code>contact.html</code></li>
+                    </ul>
+                </div>
+
+                <div class="tp-instruction">
+                    <h4><i class="fas fa-info-circle text-warning me-2"></i> 📖 PAGE 2 : À PROPOS (<code>apropos.html</code>)</h4>
+                    <ul>
+                        <li>Un titre <code>&lt;h1&gt;</code></li>
+                        <li>Au moins 2 paragraphes</li>
+                        <li>Un sous-titre <code>&lt;h2&gt;</code> avec liste non ordonnée</li>
+                        <li>Un autre sous-titre <code>&lt;h2&gt;</code> avec liste ordonnée</li>
+                        <li>Navigation vers <code>index.html</code> et <code>contact.html</code></li>
+                    </ul>
+                </div>
+
+                <div class="tp-instruction">
+                    <h4><i class="fas fa-phone-alt text-warning me-2"></i> 📞 PAGE 3 : CONTACT (<code>contact.html</code>)</h4>
+                    <ul>
+                        <li>Un titre <code>&lt;h1&gt;</code></li>
+                        <li>Un paragraphe de bienvenue</li>
+                        <li>Un sous-titre <code>&lt;h2&gt;</code> avec liste non ordonnée (coordonnées)</li>
+                        <li>Une liste ordonnée (ex: horaires)</li>
+                        <li>Utilisation de <code>&lt;strong&gt;</code></li>
+                        <li>Navigation vers <code>index.html</code> et <code>apropos.html</code></li>
+                    </ul>
+                </div>
+
+                <div class="tp-instruction">
+                    <h4><i class="fas fa-link text-warning me-2"></i> 🔗 Navigation obligatoire</h4>
+                    <p>Toutes les pages doivent être reliées entre elles. Aucun lien ne doit être cassé.</p>
+                </div>
+
+                <div class="tp-instruction">
+                    <h4><i class="fas fa-gem text-warning me-2"></i> ⭐ Bonus (facultatif)</h4>
+                    <ul>
+                        <li>Ajouter un lien externe <code>https://...</code> avec <code>target="_blank"</code></li>
+                        <li>Ajouter un commentaire HTML <code>&lt;!-- --&gt;</code></li>
+                        <li>Créer une ancre pour retour en haut de page</li>
+                    </ul>
+                </div>
+
+                <div class="alert alert-warning bg-dark text-warning border-warning mt-3">
+                    <i class="fas fa-upload fa-fw"></i> <strong>Rendre votre travail :</strong> Une fois les 3 pages créées et testées, compressez votre dossier <code>mon-ecole</code> OU uploadez vos fichiers ci-dessous.
+                </div>
+
+                <div class="text-center mt-4">
+                    <label class="form-label fw-bold"><i class="fas fa-file-code"></i> Sélectionnez vos fichiers HTML (.html)</label>
+                    <input type="file" id="tpFileUpload" accept=".html,.htm" multiple class="form-control mb-3 bg-dark text-white" style="max-width: 500px; margin:auto;">
+                    <button id="sendToCoachBtn" class="btn btn-premium btn-lg mt-2"><i class="fab fa-whatsapp"></i> ENVOYER AU COACH</button>
+                    <p class="text-muted mt-3 small"><i class="fas fa-info-circle"></i> Le message sera envoyé directement au +243860122112 avec votre code HTML.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p class="mb-2">© 2025 ISCHOLL - Plateforme de Formation</p>
+    <p class="mb-0 small">Application créée & sécurisée par <strong class="text-warning">Christian MANDEMBA</strong> | Formation en Programmation & Cybersécurité (6 mois - Mode VIP & Personnalisé) | Certificat Garanti</p>
+</footer>
+
+<!-- Modal Auth -->
+<div class="modal fade auth-modal" id="authModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-white">
+            <div class="modal-header border-warning">
+                <h5 class="modal-title"><i class="fas fa-shield-alt"></i> Authentification ISCHOLL</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <label>Prénom (Première lettre Majuscule)</label>
+                <input type="text" id="authPrenom" class="form-control mb-3 bg-dark text-white" placeholder="Ex: Caleb">
+                <label>Mot de passe</label>
+                <input type="password" id="authPass" class="form-control mb-3 bg-dark text-white">
+                <div id="authError" class="text-danger small"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-premium" id="submitAuthBtn">Déverrouiller T.P</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ad Banner -->
+<div id="adBanner" class="ad-banner">
+    <div class="d-flex align-items-center">
+        <i class="fas fa-shield-haltered fa-2x text-warning me-3"></i>
+        <div>
+            <h5 class="mb-1">🎓 ISCHOOL FORMATION</h5>
+            <p class="mb-0 small"><strong>Programmation & Cybersécurité</strong><br>6 mois - Mode VIP / Personnalisé<br>✅ Certificat Garanti</p>
+            <small class="text-warning">+243860122112</small>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({ duration: 800, once: true });
+    
+    // CREDENTIALS (non affichés dans l'UI)
+    const validCredentials = {
+        "Caleb": "IschoolCaleb2026",
+        "Felly": "IschoolFelly2026"
+    };
+    
+    let tpUnlocked = false;
+    let currentStudent = null;
+    
+    // Éléments DOM
+    const launchScreen = document.getElementById('launchScreen');
+    const enterBtn = document.getElementById('enterAppBtn');
+    const coursSection = document.getElementById('coursSection');
+    const tpSection = document.getElementById('tpSection');
+    const navCours = document.getElementById('navCours');
+    const navTP = document.getElementById('navTP');
+    const btnUnlock = document.getElementById('btnUnlock');
+    const tpLockedDiv = document.getElementById('tpContentLocked');
+    const tpUnlockedDiv = document.getElementById('tpContentUnlocked');
+    const tpStatusMsg = document.getElementById('tpStatusMsg');
+    const showAuthBtnTP = document.getElementById('showAuthBtnTP');
+    const authModal = new bootstrap.Modal(document.getElementById('authModal'));
+    const submitAuth = document.getElementById('submitAuthBtn');
+    
+    // Lancement 3D
+    enterBtn.addEventListener('click', () => {
+        launchScreen.style.opacity = '0';
+        launchScreen.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+            launchScreen.style.display = 'none';
+        }, 1000);
+    });
+    
+    // Navigation
+    function showCours() {
+        coursSection.style.display = 'block';
+        tpSection.style.display = 'none';
+    }
+    
+    function showTP() {
+        coursSection.style.display = 'none';
+        tpSection.style.display = 'block';
+        if (!tpUnlocked) {
+            tpLockedDiv.style.display = 'block';
+            tpUnlockedDiv.style.display = 'none';
+            tpStatusMsg.innerHTML = '<i class="fas fa-lock"></i> VERROUILLÉ - Authentification requise';
+            tpStatusMsg.className = 'badge bg-danger fs-6 p-3';
+        } else {
+            tpLockedDiv.style.display = 'none';
+            tpUnlockedDiv.style.display = 'block';
+            tpStatusMsg.innerHTML = '<i class="fas fa-check-circle"></i> DÉVERROUILLÉ - Bienvenue ' + currentStudent + ' | Bonne chance pour le TP !';
+            tpStatusMsg.className = 'badge bg-success fs-6 p-3';
+        }
+    }
+    
+    navCours.addEventListener('click', (e) => { e.preventDefault(); showCours(); });
+    navTP.addEventListener('click', (e) => { e.preventDefault(); showTP(); });
+    btnUnlock.addEventListener('click', (e) => { e.preventDefault(); authModal.show(); });
+    if(showAuthBtnTP) showAuthBtnTP.addEventListener('click', () => { authModal.show(); });
+    
+    // Authentification
+    submitAuth.addEventListener('click', () => {
+        const prenom = document.getElementById('authPrenom').value.trim();
+        const password = document.getElementById('authPass').value.trim();
+        const errorDiv = document.getElementById('authError');
+        
+        if (validCredentials[prenom] && validCredentials[prenom] === password) {
+            tpUnlocked = true;
+            currentStudent = prenom;
+            localStorage.setItem('ischoll_unlocked', 'true');
+            localStorage.setItem('ischoll_student', prenom);
+            authModal.hide();
+            
+            if (tpSection.style.display === 'block') {
+                tpLockedDiv.style.display = 'none';
+                tpUnlockedDiv.style.display = 'block';
+                tpStatusMsg.innerHTML = '<i class="fas fa-check-circle"></i> DÉVERROUILLÉ - Bienvenue ' + currentStudent;
+                tpStatusMsg.className = 'badge bg-success fs-6 p-3';
+            }
+            document.getElementById('authPrenom').value = '';
+            document.getElementById('authPass').value = '';
+            errorDiv.innerText = '';
+            alert(`✅ Bienvenue ${prenom} ! Vous avez accès au TP n°1. Créez vos 3 pages HTML et envoyez-les au coach.`);
+        } else {
+            errorDiv.innerText = '❌ Prénom ou mot de passe incorrect. Réessayez !';
+        }
+    });
+    
+    // Vérifier localStorage
+    if(localStorage.getItem('ischoll_unlocked') === 'true') {
+        tpUnlocked = true;
+        currentStudent = localStorage.getItem('ischoll_student');
+    }
+    
+    // Upload et envoi WhatsApp
+    const sendBtn = document.getElementById('sendToCoachBtn');
+    const fileInput = document.getElementById('tpFileUpload');
+    
+    sendBtn.addEventListener('click', () => {
+        if(!tpUnlocked){
+            alert("Veuillez d'abord déverrouiller la section T.P avec vos identifiants.");
+            return;
+        }
+        if(fileInput.files.length === 0){
+            alert("Veuillez sélectionner au moins un fichier HTML à envoyer.");
+            return;
+        }
+        
+        let filesContent = "";
+        for(let i = 0; i < fileInput.files.length; i++) {
+            const file = fileInput.files[i];
+            if(file.name.endsWith('.html') || file.name.endsWith('.htm')) {
+                filesContent += `📄 ${file.name}\n`;
+            }
+        }
+        
+        const studentName = currentStudent || "Étudiant";
+        const message = `🎓 *ISCHOLL - TP N°1 RENDU* 🎓\n\n👤 Élève: ${studentName}\n📁 Projet: Site 3 pages (mon-ecole)\n📂 Fichiers envoyés:\n${filesContent}\n\n✅ TP réalisé conformément aux consignes :\n- Structure HTML complète\n- Titres, paragraphes, listes\n- Liens entre les 3 pages\n- Bonnes pratiques respectées\n\n📱 Envoyé depuis la plateforme ISCHOLL.`;
+        const encodedMsg = encodeURIComponent(message);
+        const whatsappUrl = `https://wa.me/243860122112?text=${encodedMsg}`;
+        window.open(whatsappUrl, '_blank');
+        alert("✅ Demande envoyée au coach via WhatsApp ! Votre travail a été transmis.");
+    });
+    
+    // Publicité toutes les 3 minutes
+    let adVisible = false;
+    const adBanner = document.getElementById('adBanner');
+    function showAd() {
+        if(!adVisible) {
+            adBanner.classList.add('show');
+            adVisible = true;
+            setTimeout(() => {
+                adBanner.classList.remove('show');
+                adVisible = false;
+            }, 30000);
+        }
+    }
+    setInterval(() => {
+        showAd();
+    }, 180000);
+    
+    // Initialisation
+    showCours();
+</script>
+</body>
+</html>
